@@ -1,198 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gunnar seva members</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --border-color: #334155;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gunnar Seva — Field Dossier</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=JetBrains+Mono:wght@400;600;800&family=Special+Elite&display=swap');
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  :root{
+    --paper:#e9e0cb;
+    --paper-dark:#dcd0b2;
+    --ink:#241b12;
+    --ink-soft:#5a4c39;
+    --hazard:#d97b0f;
+    --hazard-deep:#a4530a;
+    --stripe:#181310;
+    --line:#241b12;
+  }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 24px;
-        }
+  *{box-sizing:border-box; margin:0; padding:0;}
 
-        .container {
-            max-width: 750px;
-            width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
+  body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:48px 20px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(0,0,0,0.05), transparent 40%),
+      var(--paper);
+    background-image:
+      linear-gradient(var(--paper-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-dark) 1px, transparent 1px),
+      var(--paper);
+    background-size: 28px 28px, 28px 28px, auto;
+    font-family:'JetBrains Mono', monospace;
+    color:var(--ink);
+  }
 
-        h1 {
-            font-size: 2rem;
-            text-align: center;
-            text-transform: capitalize;
-            letter-spacing: 0.5px;
-            color: var(--text-main);
-            margin-bottom: 24px;
-        }
+  .sheet{
+    max-width:760px;
+    width:100%;
+    background:var(--paper);
+    border:3px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--ink);
+    position:relative;
+    overflow:hidden;
+  }
 
-        .image-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
+  /* hazard stripe header bar */
+  .stripe-bar{
+    height:14px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--stripe),
+      var(--stripe) 16px,
+      var(--hazard) 16px,
+      var(--hazard) 32px
+    );
+    border-bottom:3px solid var(--ink);
+  }
 
-        .image-wrapper {
-            width: 100%;
-            overflow: hidden;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
+  .masthead{
+    padding:28px 36px 18px;
+    border-bottom:3px dashed var(--ink);
+    text-align:center;
+  }
 
-        .image-wrapper img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:800;
+    letter-spacing:0.35em;
+    font-size:0.7rem;
+    color:var(--hazard-deep);
+    margin-bottom:10px;
+  }
 
-        .animal-tag {
-            display: inline-block;
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
+  h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:900;
+    font-size:2.6rem;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:1;
+  }
 
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-        }
+  .subhead{
+    margin-top:8px;
+    font-family:'Special Elite', monospace;
+    font-size:0.95rem;
+    color:var(--ink-soft);
+  }
 
-        p.description {
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
+  .gallery{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    border-bottom:3px solid var(--ink);
+  }
 
-        .facts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 28px;
-        }
+  .photo{
+    position:relative;
+    aspect-ratio:4/3;
+    overflow:hidden;
+    background:
+      repeating-linear-gradient(45deg, #cfc3a3 0 10px, #c4b892 10px 20px);
+    border-right:3px solid var(--ink);
+  }
+  .photo:last-child{border-right:none;}
 
-        .fact-card {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 16px;
-            border-radius: 10px;
-        }
+  .photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:sepia(0.15) contrast(1.05);
+  }
 
-        .fact-card strong {
-            display: block;
-            color: var(--accent);
-            font-size: 0.9rem;
-            margin-bottom: 4px;
-        }
+  .photo::after{
+    content:attr(data-tag);
+    position:absolute;
+    bottom:8px;
+    left:8px;
+    background:var(--ink);
+    color:var(--paper);
+    font-size:0.65rem;
+    font-weight:800;
+    letter-spacing:0.1em;
+    padding:3px 8px;
+    text-transform:uppercase;
+  }
 
-        .fact-card span {
-            font-size: 0.95rem;
-            color: var(--text-main);
-        }
+  .body-content{
+    padding:30px 36px 36px;
+  }
 
-        .about-section {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-        }
+  .id-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:6px;
+  }
 
-        .about-section h3 {
-            font-size: 1.2rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
+  .species-tag{
+    display:inline-block;
+    background:var(--hazard);
+    color:var(--stripe);
+    font-weight:800;
+    font-size:0.72rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    padding:5px 12px;
+    border:2px solid var(--ink);
+  }
 
-        .about-section p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-    </style>
+  .case-no{
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    letter-spacing:0.08em;
+  }
+
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:1.7rem;
+    margin:10px 0 16px;
+  }
+
+  p.description{
+    color:var(--ink);
+    line-height:1.7;
+    margin-bottom:26px;
+    font-family:'Special Elite', monospace;
+    font-size:0.98rem;
+  }
+
+  .facts-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+    gap:0;
+    border:2px solid var(--ink);
+    margin-bottom:30px;
+  }
+
+  .fact-card{
+    padding:14px 16px;
+    border-right:2px solid var(--ink);
+    border-bottom:2px solid var(--ink);
+    background:var(--paper);
+  }
+  .fact-card:nth-child(2n){background:var(--paper-dark);}
+  .fact-card:last-child{border-right:none;}
+
+  .fact-card strong{
+    display:block;
+    font-size:0.65rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--hazard-deep);
+    margin-bottom:5px;
+  }
+
+  .fact-card span{
+    font-size:0.92rem;
+    font-weight:600;
+  }
+
+  /* danger meter — signature element */
+  .meter-block{
+    margin-bottom:30px;
+  }
+  .meter-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .meter{
+    height:18px;
+    border:2px solid var(--ink);
+    background:var(--paper-dark);
+    position:relative;
+  }
+  .meter-fill{
+    height:100%;
+    background:repeating-linear-gradient(
+      -45deg, var(--hazard) 0 8px, var(--hazard-deep) 8px 16px
+    );
+  }
+
+  .about-section{
+    background:var(--stripe);
+    color:var(--paper);
+    border:2px solid var(--ink);
+    padding:22px 24px;
+    position:relative;
+  }
+
+  .about-section::before{
+    content:"FIELD NOTES";
+    position:absolute;
+    top:-11px;
+    left:16px;
+    background:var(--hazard);
+    color:var(--stripe);
+    font-size:0.65rem;
+    font-weight:800;
+    letter-spacing:0.14em;
+    padding:3px 10px;
+    border:2px solid var(--ink);
+  }
+
+  .about-section p{
+    font-family:'Special Elite', monospace;
+    line-height:1.75;
+    font-size:0.95rem;
+    color:#e9e0cb;
+  }
+
+  .about-section p + p{ margin-top:14px; }
+
+  .stamp{
+    position:absolute;
+    top:70px;
+    right:24px;
+    width:110px;
+    height:110px;
+    border:4px solid var(--hazard-deep);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-14deg);
+    opacity:0.85;
+    color:var(--hazard-deep);
+    font-family:'JetBrains Mono', monospace;
+    font-weight:800;
+    font-size:0.75rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    line-height:1.2;
+    pointer-events:none;
+  }
+
+  footer.tail{
+    text-align:center;
+    padding:14px;
+    font-size:0.68rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    border-top:3px dashed var(--ink);
+  }
+
+  @media (max-width:520px){
+    h1{font-size:1.9rem;}
+    .gallery{grid-template-columns:1fr;}
+    .photo{border-right:none; border-bottom:3px solid var(--ink);}
+    .stamp{display:none;}
+    .body-content{padding:24px 20px 28px;}
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Main Title -->
-        <h1>gunnar seva members</h1>
+  <div class="sheet">
+    <div class="stripe-bar"></div>
 
-        <!-- Image Gallery -->
-        <div class="image-gallery">
-            <div class="image-wrapper">
-                <img src="gunnar1.jpeg" alt="Gunnar 1">
-            </div>
-            <div class="image-wrapper">
-                <img src="gunnar2.jpeg" alt="Gunnar 2">
-            </div>
-        </div>
-
-        <!-- Member Profile -->
-        <span class="animal-tag">Detected Member</span>
-        <h2>Gunnar (Mellivora capensis)</h2>
-        
-        <p class="description">
-            Gunnar is famous for being one of the most fearless and resilient members in the wild. Renowned for loose, thick skin that easily resists bites, stings, and quills, Gunnar possesses a natural immunity to danger and backs down from nothing.
-        </p>
-
-        <!-- Stats Grid -->
-        <div class="facts-grid">
-            <div class="fact-card">
-                <strong>Status</strong>
-                <span>Active Member</span>
-            </div>
-            <div class="fact-card">
-                <strong>Diet</strong>
-                <span>Carnivore (Eats whatever it wants)</span>
-            </div>
-            <div class="fact-card">
-                <strong>Special Ability</strong>
-                <span>Extreme Durability & Zero Fear</span>
-            </div>
-            <div class="fact-card">
-                <strong>Territory</strong>
-                <span>Gunnar Seva</span>
-            </div>
-        </div>
-
-        <!-- About Section -->
-        <div class="about-section">
-            <h3>About This Group</h3>
-            <p>
-                [Paste the text you want to add here]
-            </p>
-        </div>
+    <div class="masthead">
+      <div class="eyebrow">Gunnar Seva &middot; Wildlife Intake Unit</div>
+      <h1>Gunnar</h1>
+      <div class="subhead">"dikhne se pehle sunghai deta hai" — field team, unanimous</div>
     </div>
+
+    <div class="gallery">
+      <div class="photo" data-tag="Exhibit A">
+        <img src="gunnar1.jpeg" alt="Gunnar 1">
+      </div>
+      <div class="photo" data-tag="Exhibit B">
+        <img src="gunnar2.jpeg" alt="Gunnar 2">
+      </div>
+    </div>
+
+    <div class="body-content" style="position:relative;">
+      <div class="stamp">Handle<br>With<br>Regret</div>
+
+      <div class="id-row">
+        <span class="species-tag">Confirmed Sighting</span>
+        <span class="case-no">Case No. 0034-GS</span>
+      </div>
+
+      <h2>Gunnar <span style="font-style:normal; opacity:0.6;">(Mellivora capensis, allegedly)</span></h2>
+
+      <p class="description">
+        Gunnar seva members ek aisa group hai, jo ek society ka support system hai. Gunnar seva members me 6 log hai — ayan, ankur, keyur, rishi, om, arsh. Ye log gunnar ka rescue karte hai jo ek jokhim bhara kaam hai. ye log apni jaan pe khel kar unko pakadte hai kyunki aap sab log aaram se apni zindagi ji sakte hai. Gunnar seva members abhi bs ek chhota sa group hai jo desh ko sudharne ki kosis kar rha hai, or ye group abhi bhale bohat hi chhota hai lekin ek din ye bohat hi bada group banega or apne desh ki youth ko ek inspiration dega. aise hi aap gunnar seva members ko support karte rahiye, ye ek na ek din bohat bada group banega.
+      </p>
+
+      <div class="facts-grid">
+        <div class="fact-card">
+          <strong>Rishi</strong>
+          <span>President (English)</span>
+        </div>
+        <div class="fact-card">
+          <strong>Ankur</strong>
+          <span>Pramukh (Hindi)</span>
+        </div>
+        <div class="fact-card">
+          <strong>Om</strong>
+          <span>Designer</span>
+        </div>
+        <div class="fact-card">
+          <strong>Ayan</strong>
+          <span>Main Rescuer</span>
+        </div>
+        <div class="fact-card">
+          <strong>Keyur</strong>
+          <span>Data Manager</span>
+        </div>
+        <div class="fact-card">
+          <strong>Arsh</strong>
+          <span>Semi President</span>
+        </div>
+      </div>
+
+      <div class="meter-block">
+        <div class="meter-label"><span>Fearlessness</span><span>96%</span></div>
+        <div class="meter"><div class="meter-fill" style="width:96%;"></div></div>
+      </div>
+      <div class="meter-block">
+        <div class="meter-label"><span>Skin Toughness</span><span>90%</span></div>
+        <div class="meter"><div class="meter-fill" style="width:90%;"></div></div>
+      </div>
+
+      <div class="about-section">
+        <p><strong style="color:var(--hazard);">Gunnar ke baare mein (Honey Badger):</strong> Gunnar asal mein ek honey badger (Mellivora capensis) hai, jo duniya ke sabse nirbhay janwaron mein se ek maana jaata hai — Guinness World Records mein bhi "world's most fearless creature" ka tag mil chuka hai. Iski skin bohot moti aur loose hoti hai, jisse ye saanp ke katne, bees ke stings, aur porcupine ke quills tak se bach jaata hai.</p>
+        <p>Ye Africa, South-West Asia aur Indian subcontinent mein paaya jaata hai, aur size mein chhota hone ke bawajood sheron aur hyenas jaise bade predators se bhi bhidne se nahi darta. Isi wajah se Gunnar Seva team ne apne rescue mission ka naam ispe rakha hai — jokhim bhare kaam mein bhi peeche na hatna, yahi iski pehchaan hai.</p>
+      </div>
+    </div>
+
+    <footer class="tail">Web site credit goes to - Piyush garai</footer>
+  </div>
 
 </body>
 </html>
